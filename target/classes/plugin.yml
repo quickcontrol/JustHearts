@@ -1,7 +1,7 @@
 name: JustHearts
 author: havethacourage
 website: https://discord.com/users/322404947226525696
-description: "Plugin adds hearts per experience level (for sunflower.in.ua)"
+description: "Plugin adds hearts per experience level."
 version: 1.2
 main: me.havethacourage.justhearts.Main
 api-version: 1.21.1

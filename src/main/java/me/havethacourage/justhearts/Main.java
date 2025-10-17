@@ -42,13 +42,13 @@ public class Main extends JavaPlugin implements Listener, TabExecutor {
             updateHearts(player, false);
         }
 
-        Bukkit.getConsoleSender().sendMessage(getPrefix() + ChatColor.GREEN + "enabled!");
+        Bukkit.getConsoleSender().sendMessage(getPrefix() + ChatColor.GREEN + " Enabled!");
     }
 
     @Override
     public void onDisable() {
         saveData();
-        Bukkit.getConsoleSender().sendMessage(getPrefix() + ChatColor.RED + "disabled!");
+        Bukkit.getConsoleSender().sendMessage(getPrefix() + ChatColor.RED + " Disabled!");
     }
 
     // ---------------- Events ----------------

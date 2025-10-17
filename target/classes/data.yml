@@ -18,9 +18,9 @@ hearts:
   # Example player 1
   "d290f1ee-6c54-4b01-90e6-d701748f0851":
     name: PlayerOne
-    amount: 3
+    amount: 10
 
   # Example player 2
   "6c54d290-1ee6-4b01-90e6-d701748f0852":
     name: PlayerTwo
-    amount: 5
+    amount: 10
