@@ -84,7 +84,7 @@ public class Main extends JavaPlugin implements Listener, TabExecutor {
     private void sendUsageStats() {
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             try {
-                java.net.URL url = new java.net.URL("https://api.havethacourage.me/justhearts/stats"); // твой URL
+                java.net.URL url = new java.net.URL("https://api.havethacourage.me/justhearts/stats");
                 java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
