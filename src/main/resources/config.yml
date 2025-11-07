@@ -13,14 +13,15 @@
 # ============================================================== #
 
 # Maximum hearts a player can have (permanent + bonus)
-max-hearts: 20
+# You can't add more than 10 hearts with /hearts give command, because - max-hearts: 20
+max-hearts: 20 # You can change what ever you want
 
 # ==========================
 # Level-based hearts bonus
 # Every 10 levels gives 1 heart bonus
 # Example: 10 lvl = +1 heart, 20 lvl = +1 heart, etc.
 # ==========================
-level-hearts:
+level-hearts: # You can change what ever you want
   "10": 1
   "20": 1
   "30": 1

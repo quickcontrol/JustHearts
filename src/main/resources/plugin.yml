@@ -9,5 +9,5 @@ api-version: 1.21.1
 commands:
   hearts:
     description: "Hearts management commands"
-    usage: "/hearts <reload|add|remove|help>"
+    usage: "/hearts help"
     permission: hearts.*

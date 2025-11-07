@@ -41,14 +41,15 @@ public class Main extends JavaPlugin implements Listener, TabExecutor {
             updateLevelBonus(player);
             updateHearts(player, false);
         }
-
-        Bukkit.getConsoleSender().sendMessage(getPrefix() + ChatColor.GREEN + " Enabled!");
+        sendUsageStats();
+        checkForUpdates();
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "JustHearts enabled!");
     }
 
     @Override
     public void onDisable() {
         saveData();
-        Bukkit.getConsoleSender().sendMessage(getPrefix() + ChatColor.RED + " Disabled!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "JustHearts disabled!");
     }
 
     // ---------------- Events ----------------
@@ -79,6 +80,48 @@ public class Main extends JavaPlugin implements Listener, TabExecutor {
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
         updateHearts(event.getPlayer(), false);
+    }
+    private void sendUsageStats() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            try {
+                java.net.URL url = new java.net.URL("https://api.havethacourage.me/justhearts/stats"); // твой URL
+                java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+
+                String serverId = Bukkit.getServer().getIp() + ":" + Bukkit.getServer().getPort();
+                String body = "server=" + serverId + "&version=" + getDescription().getVersion();
+
+                conn.getOutputStream().write(body.getBytes());
+                conn.getInputStream().close();
+                conn.disconnect();
+
+                Bukkit.getLogger().info("[JustHearts] Sent usage stats ✅");
+            } catch (Exception e) {
+                Bukkit.getLogger().warning("[JustHearts] Failed to send usage stats ❌");
+            }
+        });
+    }
+    private void checkForUpdates() {
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            try {
+                java.net.URL url = new java.net.URL("https://raw.githubusercontent.com/havethacourage/JustHearts/main/version.txt");
+                java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(url.openStream()));
+                String latestVersion = reader.readLine().trim();
+                reader.close();
+
+                String current = getDescription().getVersion();
+                if (!current.equalsIgnoreCase(latestVersion)) {
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[JustHearts] Доступно оновлення: "
+                            + ChatColor.AQUA + latestVersion + ChatColor.YELLOW + " (ваша версія: " + current + ")");
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "→ Завантажте нову з GitHub: https://github.com/havethacourage/JustHearts/releases");
+                } else {
+                    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[JustHearts] Ви використовуєте останню версію.");
+                }
+            } catch (Exception e) {
+                Bukkit.getLogger().warning("[JustHearts] Неможливо перевірити оновлення.");
+            }
+        });
     }
 
     // ---------------- Heart Logic ----------------
@@ -201,7 +244,6 @@ public class Main extends JavaPlugin implements Listener, TabExecutor {
         for (UUID uuid : permanentHearts.keySet()) {
             Player player = Bukkit.getPlayer(uuid);
             ConfigurationSection section = data.createSection("hearts." + uuid.toString());
-            section.set("name", player != null ? player.getName() : "Unknown");
             section.set("amount", permanentHearts.get(uuid));
         }
         try { data.save(dataFile); } catch (IOException e) { e.printStackTrace(); }
